@@ -102,13 +102,15 @@ function test_evalAbilityHelperNegativeRoundHCL()
     luaunit.assertEquals(effect, -7);
 end
 
+abilityEffectBonusToReturn = 5;
+
 ActorManager35E = {}
 function ActorManager35E.getAbilityBonus(rActor, sAbility) 
     return 2;
 end
 
 function ActorManager35E.getAbilityEffectsBonus(rActor, sAbility) 
-    return 5;
+    return abilityEffectBonusToReturn;
 end
 
 function test_evalAbilityHelperHSTR()
@@ -125,6 +127,24 @@ function test_evalAbilityHelperRoundHSTR()
     local nodeSpellClass={};
     local effect = evalAbilityHelper(rActor, sEffectAbility, nodeSpellClass);
     luaunit.assertEquals(effect, 4);
+end
+
+function test_evalAbilityHelperRoundHSTRNegativeBonus()
+    local sEffectAbility = '[^HSTR]';
+    local rActor={};
+    local nodeSpellClass={};
+    abilityEffectBonusToReturn = -5;
+    local effect = evalAbilityHelper(rActor, sEffectAbility, nodeSpellClass);
+    luaunit.assertEquals(effect, -2);
+end
+
+function test_evalAbilityHelperRoundHSTRZeroBonus()
+    local sEffectAbility = '[^HSTR]';
+    local rActor={};
+    local nodeSpellClass={};
+    abilityEffectBonusToReturn = -2;
+    local effect = evalAbilityHelper(rActor, sEffectAbility, nodeSpellClass);
+    luaunit.assertEquals(effect, -0);
 end
 
 os.exit(luaunit.LuaUnit.run());
